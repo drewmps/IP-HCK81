@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.post("/register", UserController.register);
+app.post("/login", UserController.login);
 
 app.use(errorHandler);
 

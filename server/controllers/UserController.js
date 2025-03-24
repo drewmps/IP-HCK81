@@ -17,5 +17,43 @@ class UserController {
       next(error);
     }
   }
+
+  static async login(req, res, next) {
+    try {
+      const { email, password } = req.body;
+
+      let errorValidation = [];
+      if (!email) {
+        errorValidation.push({ message: "Email is required" });
+      }
+      if (!password) {
+        errorValidation.push({ message: "Password is required" });
+      }
+      if (errorValidation.length > 0) {
+        next({ name: "ValidationError", errors: errorValidation });
+        return;
+      }
+
+      const user = await User.findOne({ where: { email } });
+
+      if (!user) {
+        next({ name: "Unauthorized", message: "Invalid email or password" });
+        return;
+      }
+
+      const isValidPassword = comparePassword(password, user.password);
+      if (!isValidPassword) {
+        next({ name: "Unauthorized", message: "Invalid email or password" });
+        return;
+      }
+
+      const access_token = signToken({ id: user.id });
+      res.status(200).json({
+        access_token,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 module.exports = UserController;
