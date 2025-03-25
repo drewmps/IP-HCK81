@@ -98,7 +98,24 @@ class Controller {
         data: rows,
       });
     } catch (error) {
-      console.log("~ CuisineController ~ getCuisines ~ error:", error);
+      console.log("~ Controller ~ getNews ~ error:", error);
+      next(error);
+    }
+  }
+
+  static async getNewsById(req, res, next) {
+    try {
+      let { id } = req.params;
+
+      let news = await News.findByPk(id);
+      if (!news) {
+        next({ name: "NotFound", message: "Data not found" });
+        return;
+      }
+
+      res.status(200).json(news);
+    } catch (error) {
+      console.log("~ Controller ~ getNewsById ~ error:", error);
       next(error);
     }
   }
