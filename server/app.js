@@ -16,6 +16,7 @@ app.post("/register", UserController.register);
 app.post("/login", UserController.login);
 
 app.use(authentication);
+app.put("/users/edit", UserController.edit);
 
 app.use(errorHandler);
 

@@ -55,5 +55,17 @@ class UserController {
       next(error);
     }
   }
+
+  static async edit(req, res, next) {
+    try {
+      const { name, email, password } = req.body;
+
+      const user = req.user;
+      await user.update({ name, email, password });
+      res.status(200).json({ message: "User updated successfully" });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 module.exports = UserController;
