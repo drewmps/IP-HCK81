@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -30,6 +30,15 @@ export default function Navbar() {
             </li>
           </ul>
           <div className="d-flex gap-3">
+            <NavLink
+              to="/profile"
+              className="nav-link"
+              style={({ isActive }) =>
+                isActive ? { fontWeight: "bold" } : { fontWeight: "normal" }
+              }
+            >
+              Profile
+            </NavLink>
             <button className="nav-link" onClick={handleLogout}>
               Logout
             </button>

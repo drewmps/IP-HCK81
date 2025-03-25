@@ -5,6 +5,8 @@ import RegisterPage from "./pages/Register.page";
 import RootLayout from "./layouts/Root.layout";
 import HomePage from "./pages/Home.page";
 import NewsDetailPage from "./pages/NewsDetail.page";
+import ProfilePage from "./pages/Profile.page";
+import DeleteAccountConfirmationPage from "./pages/DeleteAccountConfirmation.page";
 
 function App() {
   return (
@@ -17,6 +19,11 @@ function App() {
         <Route path="/" element={<RootLayout />}>
           <Route index element={<HomePage />} />
           <Route path="news/:id" element={<NewsDetailPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route
+            path="profile/delete"
+            element={<DeleteAccountConfirmationPage />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>
