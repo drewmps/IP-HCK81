@@ -2,7 +2,7 @@ const { comparePassword } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
 
 const { User } = require("../models");
-class UserController {
+class Controller {
   static async register(req, res, next) {
     try {
       const { name, email, password } = req.body;
@@ -79,4 +79,4 @@ class UserController {
   }
 }
 
-module.exports = UserController;
+module.exports = Controller;
