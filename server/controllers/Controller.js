@@ -1,7 +1,8 @@
 const { comparePassword } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
 
-const { User } = require("../models");
+const { User, News } = require("../models");
+const { Op } = require("sequelize");
 class Controller {
   static async register(req, res, next) {
     try {
@@ -74,6 +75,30 @@ class Controller {
       await user.destroy();
       res.status(200).json({ message: "User deleted successfully" });
     } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getNews(req, res, next) {
+    try {
+      const { q } = req.query;
+      const paramQuerySQL = {
+        where: {},
+      };
+
+      if (q) {
+        paramQuerySQL.where.title = {
+          [Op.iLike]: `%${q}%`,
+        };
+      }
+
+      const { rows } = await News.findAndCountAll(paramQuerySQL);
+
+      res.status(200).json({
+        data: rows,
+      });
+    } catch (error) {
+      console.log("~ CuisineController ~ getCuisines ~ error:", error);
       next(error);
     }
   }
