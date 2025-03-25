@@ -1,21 +1,6 @@
-import axios from "axios";
-import { Link, useNavigate } from "react-router";
-import { getBaseUrl } from "../helpers/helper";
+import { Link } from "react-router";
 
 export default function CardNews({ title, to }) {
-  // const navigate = useNavigate();
-  // async function handleJoin() {
-  //   try {
-  //     await axios.post(getBaseUrl() + `/myclubs/${clubId}`, null, {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-  //       },
-  //     });
-  //     navigate("/my-clubs");
-  //   } catch (error) {
-  //     console.log("🚀 ~ handleJoin ~ error:", error);
-  //   }
-  // }
   return (
     <div className="card" style={{ width: "40rem" }}>
       <div className="card-body">
