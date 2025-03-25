@@ -17,6 +17,7 @@ app.post("/login", UserController.login);
 
 app.use(authentication);
 app.put("/users/edit", UserController.edit);
+app.delete("/users/delete", UserController.delete);
 
 app.use(errorHandler);
 
