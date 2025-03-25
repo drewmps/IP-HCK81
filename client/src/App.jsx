@@ -4,6 +4,7 @@ import LoginLayout from "./layouts/Login.layout";
 import RegisterPage from "./pages/Register.page";
 import RootLayout from "./layouts/Root.layout";
 import HomePage from "./pages/Home.page";
+import NewsDetailPage from "./pages/NewsDetail.page";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         </Route>
         <Route path="/" element={<RootLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="news/:id" element={<NewsDetailPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
