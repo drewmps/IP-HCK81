@@ -6,9 +6,15 @@ import { useEffect, useState } from "react";
 export default function HomePage() {
   let [newsList, setNewsList] = useState([]);
   const [search, setSearch] = useState("");
+
   async function fetchNewsList() {
     try {
-      const { data } = await axios.get(`${getBaseUrl()}/news`, {
+      const url = new URL(getBaseUrl() + "/news");
+      if (search) {
+        url.searchParams.append("q", search);
+      }
+
+      const { data } = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -25,10 +31,19 @@ export default function HomePage() {
   useEffect(() => {
     fetchNewsList();
   }, []);
+
+  async function handleSearch(e) {
+    e.preventDefault();
+    await fetchNewsList();
+  }
   return (
     <>
       <div className="col-12 d-flex justify-content-center mt-5 mb-5">
-        <form className="d-flex gap-2 w-50" role="search">
+        <form
+          className="d-flex gap-2 w-50"
+          role="search"
+          onSubmit={handleSearch}
+        >
           <input
             className="form-control"
             type="search"
@@ -43,7 +58,9 @@ export default function HomePage() {
             <button className="btn btn-primary w-auto">Voice</button>
           </div>
           <div>
-            <button className="btn btn-primary w-auto">Search</button>
+            <button className="btn btn-primary w-auto" type="submit">
+              Search
+            </button>
           </div>
         </form>
       </div>
