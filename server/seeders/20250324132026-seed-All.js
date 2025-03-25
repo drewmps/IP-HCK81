@@ -14,9 +14,23 @@ module.exports = {
       return row;
     });
     await queryInterface.bulkInsert("Users", rows);
+
+    let { articles } = JSON.parse(
+      await fs.readFile("./data/news.json", "utf8")
+    );
+    rows = articles.results.map((result) => {
+      return {
+        title: result.title,
+        body: result.body,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    });
+    await queryInterface.bulkInsert("News", rows);
   },
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete("Users", null, {});
+    await queryInterface.bulkDelete("News", null, {});
   },
 };
