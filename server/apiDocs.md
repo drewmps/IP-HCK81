@@ -113,6 +113,12 @@ These routes require authentication.
       "email": "string"
     }
     ```
+  - **401 Bad Request**:
+    ```json
+    {
+      "message": "Invalid token"
+    }
+    ```
 
 ### 5. **PATCH /users/edit**
 
@@ -130,6 +136,12 @@ These routes require authentication.
       "message": "User updated successfully"
     }
     ```
+  - **401 Bad Request**:
+    ```json
+    {
+      "message": "Invalid token"
+    }
+    ```
 
 ### 6. **DELETE /users/delete**
 
@@ -139,6 +151,12 @@ These routes require authentication.
     ```json
     {
       "message": "User deleted successfully"
+    }
+    ```
+  - **401 Bad Request**:
+    ```json
+    {
+      "message": "Invalid token"
     }
     ```
 
@@ -168,6 +186,12 @@ These routes require authentication.
       ]
     }
     ```
+  - **401 Bad Request**:
+    ```json
+    {
+      "message": "Invalid token"
+    }
+    ```
 
 ### 8. **POST /news/summarize**
 
@@ -185,6 +209,12 @@ These routes require authentication.
       "text": "summarized text"
     }
     ```
+  - **401 Bad Request**:
+    ```json
+    {
+      "message": "Invalid token"
+    }
+    ```
 
 ### 9. **GET /news/:id**
 
@@ -200,6 +230,12 @@ These routes require authentication.
       "body": "string",
       "createdAt": "string",
       "updatedAt": "string"
+    }
+    ```
+  - **401 Bad Request**:
+    ```json
+    {
+      "message": "Invalid token"
     }
     ```
   - **404 NOT FOUND**:
@@ -225,22 +261,18 @@ These routes require authentication.
       "audioContent": "string"
     }
     ```
+  - **401 Bad Request**:
+    ```json
+    {
+      "message": "Invalid token"
+    }
+    ```
 
 ---
 
 ## Global Error
 
-### 1. **Unauthorized (Invalid Token)**
-
-- **Status**: 401
-- **Response**:
-  ```json
-  {
-    "message": "Invalid token"
-  }
-  ```
-
-### 2. **Internal Server Error**
+### 1. **Internal Server Error**
 
 - **Status**: 500
 - **Response**:
