@@ -6,6 +6,26 @@ import { getBaseUrl } from "../helpers/helper";
 export default function NewsDetailPage() {
   const { id } = useParams();
   const [news, setNews] = useState({});
+  const [tldr, setTldr] = useState("");
+  async function handleSummarize() {
+    try {
+      const { data } = await axios.post(
+        `${getBaseUrl()}/news/summarize`,
+        { text: news.body },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+      setTldr(data.text);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        text: error.response.data.message,
+      });
+    }
+  }
   useEffect(() => {
     async function getNews() {
       const response = await axios.get(`${getBaseUrl()}/news/${id}`, {
@@ -26,10 +46,20 @@ export default function NewsDetailPage() {
             <button className="btn btn-primary">Read it for me</button>
           </div>
           <div>
-            <button className="btn btn-primary">Get the gist</button>
+            <button className="btn btn-primary" onClick={handleSummarize}>
+              Generate TLDR
+            </button>
           </div>
         </div>
-        <p>{news.body}</p>
+        {tldr ? (
+          <div className="mb-3">
+            <h3>TLDR</h3>
+            <p>{tldr}</p>
+          </div>
+        ) : (
+          <></>
+        )}
+        <p style={{ whiteSpace: "pre-line" }}>{news.body}</p>
       </div>
     </>
   );
