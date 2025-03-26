@@ -59,10 +59,10 @@ class Controller {
 
   static async edit(req, res, next) {
     try {
-      const { name, email, password } = req.body;
+      const { name } = req.body;
 
       const user = req.user;
-      await user.update({ name, email, password });
+      await user.update({ name });
       res.status(200).json({ message: "User updated successfully" });
     } catch (error) {
       next(error);
@@ -101,6 +101,11 @@ class Controller {
       console.log("~ Controller ~ getNews ~ error:", error);
       next(error);
     }
+  }
+
+  static async getCurrentUser(req, res, next) {
+    const { name, email } = req.user;
+    res.status(200).json({ name, email });
   }
 
   static async getNewsById(req, res, next) {

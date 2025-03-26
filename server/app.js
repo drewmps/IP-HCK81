@@ -19,7 +19,8 @@ app.post("/register", Controller.register);
 app.post("/login", Controller.login);
 
 app.use(authentication);
-app.put("/users/edit", Controller.edit);
+app.get("/users/", Controller.getCurrentUser);
+app.patch("/users/edit", Controller.edit);
 app.delete("/users/delete", Controller.delete);
 app.get("/news", Controller.getNews);
 app.get("/news/:id", Controller.getNewsById);
