@@ -6,6 +6,7 @@ const client = new OAuth2Client();
 
 const { User, News } = require("../models");
 const { Op } = require("sequelize");
+const axios = require("axios");
 class Controller {
   static async register(req, res, next) {
     try {
@@ -161,6 +162,35 @@ class Controller {
       res.status(200).json(response);
     } catch (error) {
       console.log("🚀 ~ Controller ~ summarizeNews ~ error:", error);
+      next(error);
+    }
+  }
+
+  static async synthesize(req, res, next) {
+    try {
+      const { text } = req.body;
+      const apiKey = process.env.API_KEY_SYNTHESIZE;
+      const endpoint = `https://texttospeech.googleapis.com/v1beta1/text:synthesize?key=${apiKey}`;
+      const payload = {
+        audioConfig: {
+          audioEncoding: "MP3",
+          effectsProfileId: ["small-bluetooth-speaker-class-device"],
+          pitch: 0,
+          speakingRate: 1,
+        },
+        input: {
+          text: text,
+        },
+        voice: {
+          languageCode: "en-US",
+          name: "en-US-Standard-A",
+        },
+      };
+      const response = await axios.post(endpoint, payload);
+      res.status(200).json(response.data);
+    } catch (error) {
+      console.log("🚀 ~ Controller ~ synthesize ~ error:", error);
+
       next(error);
     }
   }

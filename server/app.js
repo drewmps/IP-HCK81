@@ -26,6 +26,7 @@ app.delete("/users/delete", Controller.delete);
 app.get("/news", Controller.getNews);
 app.post("/news/summarize", Controller.summarizeNews);
 app.get("/news/:id", Controller.getNewsById);
+app.post("/news/synthesize", Controller.synthesize);
 
 app.use(errorHandler);
 
