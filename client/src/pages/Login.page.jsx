@@ -1,12 +1,36 @@
 import axios from "axios";
-import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { getBaseUrl } from "../helpers/helper";
 
 export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    google.accounts.id.initialize({
+      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+
+      callback: async (response) => {
+        console.log("Encoded JWT ID token: " + response.credential);
+        const { data } = await axios.post(getBaseUrl() + `/auth/google`, {
+          googleToken: response.credential,
+        });
+        localStorage.setItem("access_token", data.access_token);
+
+        // navigate to the home page or do magic stuff
+        navigate("/");
+      },
+    });
+
+    google.accounts.id.renderButton(document.getElementById("buttonDiv"), {
+      theme: "outline",
+      size: "large",
+    });
+    // Display the One Tap dialog; comment out to remove the dialog
+    google.accounts.id.prompt();
+  }, []);
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -63,9 +87,11 @@ export default function LoginPage() {
             }}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary mb-3">
           Login
         </button>
+        <div id="buttonDiv"></div>
+
         <p className="mt-2">
           Don't have an account?{" "}
           <Link to="/register" className="text-primary">
