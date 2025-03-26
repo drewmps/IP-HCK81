@@ -21,13 +21,15 @@ export default function NewsDetailPage() {
     <>
       <div className="w-50 m-auto mt-5">
         <h1 className="mb-3">{news.title}</h1>
+        <div className="d-flex gap-3 mb-3">
+          <div>
+            <button className="btn btn-primary">Read it for me</button>
+          </div>
+          <div>
+            <button className="btn btn-primary">Get the gist</button>
+          </div>
+        </div>
         <p>{news.body}</p>
-        <div className="mb-3">
-          <button className="btn btn-primary">Read it for me</button>
-        </div>
-        <div>
-          <button className="btn btn-primary">Get the gist</button>
-        </div>
       </div>
     </>
   );
