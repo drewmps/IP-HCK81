@@ -9,7 +9,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    google.accounts.id.initialize({
+    window.google.accounts.id.initialize({
       client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
 
       callback: async (response) => {
