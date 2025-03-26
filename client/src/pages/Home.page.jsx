@@ -8,8 +8,8 @@ export default function HomePage() {
   let [newsList, setNewsList] = useState([]);
 
   const {
-    text,
-    setText,
+    search,
+    setSearch,
     startListening,
     stopListening,
     isListening,
@@ -19,8 +19,8 @@ export default function HomePage() {
   async function fetchNewsList() {
     try {
       const url = new URL(getBaseUrl() + "/news");
-      if (text) {
-        url.searchParams.append("q", text);
+      if (search) {
+        url.searchParams.append("q", search);
       }
 
       const { data } = await axios.get(url, {
@@ -90,9 +90,9 @@ export default function HomePage() {
             type="search"
             placeholder="Search"
             aria-label="Search"
-            value={text}
+            value={search}
             onChange={(e) => {
-              setText(e.target.value);
+              setSearch(e.target.value);
             }}
           />
           <div>{voiceSearch}</div>

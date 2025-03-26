@@ -7,21 +7,21 @@ if ("webkitSpeechRecognition" in window) {
   recognition.lang = "en-US";
 }
 const useSpeechRecognition = () => {
-  const [text, setText] = useState("");
+  const [search, setSearch] = useState("");
   const [isListening, setIsListening] = useState(false);
   useEffect(() => {
     if (!recognition) {
       return;
     }
     recognition.onresult = (event) => {
-      setText(event.results[0][0].transcript);
+      setSearch(event.results[0][0].transcript);
       recognition.stop();
       setIsListening(false);
     };
   }, []);
 
   const startListening = () => {
-    setText("");
+    setSearch("");
     setIsListening(true);
     recognition.start();
   };
@@ -30,8 +30,8 @@ const useSpeechRecognition = () => {
     recognition.stop();
   };
   return {
-    text,
-    setText,
+    search,
+    setSearch,
     isListening,
     startListening,
     stopListening,
