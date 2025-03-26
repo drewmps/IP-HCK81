@@ -2,16 +2,25 @@ import axios from "axios";
 import CardNews from "../components/CardNews";
 import { getBaseUrl } from "../helpers/helper";
 import { useEffect, useState } from "react";
+import useSpeechRecognition from "../hooks/useSpeechRecognitionHook";
 
 export default function HomePage() {
   let [newsList, setNewsList] = useState([]);
-  const [search, setSearch] = useState("");
+
+  const {
+    text,
+    setText,
+    startListening,
+    stopListening,
+    isListening,
+    hasRecognitionSupport,
+  } = useSpeechRecognition();
 
   async function fetchNewsList() {
     try {
       const url = new URL(getBaseUrl() + "/news");
-      if (search) {
-        url.searchParams.append("q", search);
+      if (text) {
+        url.searchParams.append("q", text);
       }
 
       const { data } = await axios.get(url, {
@@ -36,6 +45,38 @@ export default function HomePage() {
     e.preventDefault();
     await fetchNewsList();
   }
+
+  let voiceSearch = (
+    <button className="btn btn-primary w-auto" onClick={startListening}>
+      Voice
+    </button>
+  );
+  if (hasRecognitionSupport) {
+    if (!isListening) {
+      voiceSearch = (
+        <button className="btn btn-primary w-auto" onClick={startListening}>
+          Voice
+        </button>
+      );
+    } else {
+      voiceSearch = (
+        <button className="btn btn-primary w-auto" onClick={stopListening}>
+          Stop
+        </button>
+      );
+    }
+  } else {
+    voiceSearch = (
+      <button
+        className="btn btn-secondary w-auto"
+        disabled
+        style={{ cursor: "not-allowed" }}
+      >
+        Voice
+      </button>
+    );
+  }
+
   return (
     <>
       <div className="col-12 d-flex justify-content-center mt-5 mb-5">
@@ -49,14 +90,12 @@ export default function HomePage() {
             type="search"
             placeholder="Search"
             aria-label="Search"
-            value={search}
+            value={text}
             onChange={(e) => {
-              setSearch(e.target.value);
+              setText(e.target.value);
             }}
           />
-          <div>
-            <button className="btn btn-primary w-auto">Voice</button>
-          </div>
+          <div>{voiceSearch}</div>
           <div>
             <button className="btn btn-primary w-auto" type="submit">
               Search
