@@ -1,6 +1,8 @@
 const { comparePassword } = require("../helpers/bcrypt");
 const getGeminiResponse = require("../helpers/geminiHelper");
 const { signToken } = require("../helpers/jwt");
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client();
 
 const { User, News } = require("../models");
 const { Op } = require("sequelize");
@@ -55,6 +57,32 @@ class Controller {
       });
     } catch (error) {
       next(error);
+    }
+  }
+
+  static async googleLogin(req, res, next) {
+    const { googleToken } = req.body;
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: googleToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      const payload = ticket.getPayload();
+      const [user, created] = await User.findOrCreate({
+        where: { email: payload.email },
+        defaults: {
+          name: payload.name,
+          email: payload.email,
+          provider: "google",
+          password: "google_id",
+        },
+        hooks: false,
+      });
+
+      const token = signToken({ id: user.id });
+      res.status(created ? 201 : 200).json({ access_token: token });
+    } catch (error) {
+      res.status(500).json({ message: "Internal server error" });
     }
   }
 

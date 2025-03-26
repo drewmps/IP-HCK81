@@ -17,6 +17,7 @@ app.use(express.json());
 
 app.post("/register", Controller.register);
 app.post("/login", Controller.login);
+app.post("/auth/google", Controller.googleLogin);
 
 app.use(authentication);
 app.get("/users/", Controller.getCurrentUser);
