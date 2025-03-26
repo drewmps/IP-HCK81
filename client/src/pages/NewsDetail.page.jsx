@@ -7,6 +7,30 @@ export default function NewsDetailPage() {
   const { id } = useParams();
   const [news, setNews] = useState({});
   const [tldr, setTldr] = useState("");
+  const [audioSrc, setAudioSrc] = useState(null);
+
+  async function handleSynthesize() {
+    try {
+      const response = await axios.post(
+        getBaseUrl() + "/news/synthesize",
+        {
+          text: news.body,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+      const audioSrc = `data:audio/mp3;base64,${response.data.audioContent}`;
+      setAudioSrc(audioSrc);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        text: error.response.data.message,
+      });
+    }
+  }
   async function handleSummarize() {
     try {
       const { data } = await axios.post(
@@ -43,7 +67,9 @@ export default function NewsDetailPage() {
         <h1 className="mb-3">{news.title}</h1>
         <div className="d-flex gap-3 mb-3">
           <div>
-            <button className="btn btn-primary">Read it for me</button>
+            <button className="btn btn-primary" onClick={handleSynthesize}>
+              Read it for me
+            </button>
           </div>
           <div>
             <button className="btn btn-primary" onClick={handleSummarize}>
@@ -51,13 +77,17 @@ export default function NewsDetailPage() {
             </button>
           </div>
         </div>
-        {tldr ? (
+
+        {audioSrc && (
+          <div>
+            <audio controls src={audioSrc} />
+          </div>
+        )}
+        {tldr && (
           <div className="mb-3">
             <h3>TLDR</h3>
             <p>{tldr}</p>
           </div>
-        ) : (
-          <></>
         )}
         <p style={{ whiteSpace: "pre-line" }}>{news.body}</p>
       </div>
