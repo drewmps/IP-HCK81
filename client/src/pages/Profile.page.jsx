@@ -4,27 +4,15 @@ import { Link, useNavigate, useParams } from "react-router";
 import { getBaseUrl } from "../helpers/helper";
 
 export default function ProfilePage() {
-  // useEffect(() => {
-  //   async function getNews() {
-  //     const response = await axios.get(`${getBaseUrl()}/news/${id}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-  //       },
-  //     });
-  //     setNews(response.data);
-  //   }
-  //   getNews();
-  // }, []);
-  const navigate = useNavigate();
-  async function handleDelete() {
+  const [name, setName] = useState("");
+  async function getCurrentUser() {
     try {
-      await axios.delete(`${getBaseUrl()}/users/delete`, {
+      const { data } = await axios.get(`${getBaseUrl()}/users`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
       });
-      localStorage.removeItem("access_token");
-      navigate("/login");
+      setName(data.name);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -32,6 +20,10 @@ export default function ProfilePage() {
       });
     }
   }
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+
   return (
     <>
       <div className="w-50 m-auto mt-5">
@@ -39,7 +31,7 @@ export default function ProfilePage() {
 
         <div>
           <h5>Name</h5>
-          <p>Namanya</p>
+          <p>{name}</p>
         </div>
 
         <div className="mb-3">

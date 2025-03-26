@@ -7,6 +7,7 @@ import HomePage from "./pages/Home.page";
 import NewsDetailPage from "./pages/NewsDetail.page";
 import ProfilePage from "./pages/Profile.page";
 import DeleteAccountConfirmationPage from "./pages/DeleteAccountConfirmation.page";
+import EditProfilePage from "./pages/EditProfile.page";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="news/:id" element={<NewsDetailPage />} />
           <Route path="profile" element={<ProfilePage />} />
+          <Route path="profile/edit" element={<EditProfilePage />} />
           <Route
             path="profile/delete"
             element={<DeleteAccountConfirmationPage />}
