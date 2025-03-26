@@ -1,4 +1,5 @@
 const { comparePassword } = require("../helpers/bcrypt");
+const getGeminiResponse = require("../helpers/geminiHelper");
 const { signToken } = require("../helpers/jwt");
 
 const { User, News } = require("../models");
@@ -121,6 +122,17 @@ class Controller {
       res.status(200).json(news);
     } catch (error) {
       console.log("~ Controller ~ getNewsById ~ error:", error);
+      next(error);
+    }
+  }
+
+  static async summarizeNews(req, res, next) {
+    try {
+      const { text } = req.body;
+      const response = await getGeminiResponse(text);
+      res.status(200).json(response);
+    } catch (error) {
+      console.log("🚀 ~ Controller ~ summarizeNews ~ error:", error);
       next(error);
     }
   }

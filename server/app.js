@@ -23,6 +23,7 @@ app.get("/users/", Controller.getCurrentUser);
 app.patch("/users/edit", Controller.edit);
 app.delete("/users/delete", Controller.delete);
 app.get("/news", Controller.getNews);
+app.post("/news/summarize", Controller.summarizeNews);
 app.get("/news/:id", Controller.getNewsById);
 
 app.use(errorHandler);
