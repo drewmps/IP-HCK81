@@ -1,5 +1,7 @@
 "use strict";
+
 const { hashPassword } = require("../helpers/bcrypt");
+const seedHelper = require("../helpers/seedHelper");
 
 const fs = require("fs").promises;
 /** @type {import('sequelize-cli').Migration} */
@@ -15,10 +17,13 @@ module.exports = {
     });
     await queryInterface.bulkInsert("Users", rows);
 
-    let { articles } = JSON.parse(
-      await fs.readFile("./data/news.json", "utf8")
-    );
-    rows = articles.results.map((result) => {
+    // let { articles } = JSON.parse(
+    //   await fs.readFile("./data/news.json", "utf8")
+    // );
+
+    const data = await seedHelper();
+
+    rows = data.articles.results.map((result) => {
       return {
         title: result.title,
         body: result.body,
